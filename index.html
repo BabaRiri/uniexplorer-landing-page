@@ -207,38 +207,63 @@
             transform: none;
         }
 
-        /* Screenshot Section */
-        .screenshot-section {
-            padding: 0;
-            margin: 0;
-            width: 100vw;
-            position: relative;
-            left: 50%;
-            right: 50%;
-            margin-left: -50vw;
-            margin-right: -50vw;
+        /* Screenshots Section */
+        .screenshots-section {
+            padding: 4rem 0;
             background-color: #f8f8f8;
             border-top: 1px solid #e5e5e5;
             border-bottom: 1px solid #e5e5e5;
         }
 
-        .screenshot-container {
-            position: relative;
-            cursor: pointer;
-            overflow: hidden;
+        .screenshots-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #0a0a0a;
         }
 
-        .screenshot-image {
+        .screenshots-subtitle {
+            text-align: center;
+            color: #525252;
+            margin-bottom: 3rem;
+            font-size: 1rem;
+        }
+
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .screenshot-item {
+            position: relative;
+            cursor: pointer;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background-color: #ffffff;
+            border: 1px solid #e5e5e5;
+        }
+
+        .screenshot-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-color: #d4d4d4;
+        }
+
+        .screenshot-thumbnail {
             width: 100%;
-            height: 500px;
+            height: 200px;
             object-fit: cover;
             object-position: top;
             transition: all 0.3s ease;
-            display: block;
         }
 
-        .screenshot-image:hover {
-            transform: scale(1.02);
+        .screenshot-item:hover .screenshot-thumbnail {
+            transform: scale(1.05);
         }
 
         .screenshot-overlay {
@@ -247,36 +272,45 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.6);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
             color: white;
-            font-size: 1.125rem;
-            font-weight: 500;
             opacity: 0;
             transition: all 0.3s ease;
         }
 
-        .screenshot-container:hover .screenshot-overlay {
+        .screenshot-item:hover .screenshot-overlay {
             opacity: 1;
         }
 
         .screenshot-overlay-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
         }
 
         .screenshot-overlay-text {
-            text-align: center;
-            max-width: 400px;
+            font-size: 0.875rem;
+            font-weight: 500;
         }
 
-        .screenshot-overlay-subtext {
+        .screenshot-caption {
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .screenshot-caption h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0a0a0a;
+            margin-bottom: 0.25rem;
+        }
+
+        .screenshot-caption p {
             font-size: 0.875rem;
-            opacity: 0.9;
-            margin-top: 0.5rem;
+            color: #525252;
         }
 
         /* Modal for expanded screenshot */
@@ -309,6 +343,16 @@
             object-fit: contain;
             border-radius: 0.5rem;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-image.zoomed {
+            transform: scale(1.5);
+            cursor: zoom-out;
+        }
+
+        .modal-image:not(.zoomed) {
+            cursor: zoom-in;
         }
 
         .close {
@@ -325,6 +369,19 @@
 
         .close:hover {
             color: #ccc;
+        }
+
+        .modal-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
         }
 
         @keyframes fadeIn {
@@ -625,6 +682,15 @@
                 gap: 1.5rem;
             }
 
+            .screenshots-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .screenshots-section {
+                padding: 2rem 0;
+            }
+
             .hero-shape-1 {
                 width: 150px;
                 height: 150px;
@@ -643,10 +709,6 @@
                 display: none;
             }
 
-            .screenshot-image {
-                height: 300px;
-            }
-
             .modal-content {
                 width: 95%;
                 height: 70vh;
@@ -662,6 +724,12 @@
             header.scrolled {
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
+            }
+        }
+
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .screenshots-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -707,15 +775,82 @@
         </div>
     </section>
 
-    <!-- Screenshot Section -->
-    <section class="screenshot-section">
-        <div class="screenshot-container" onclick="openModal()">
-            <img src="uniexplorer-screenshot.jpeg" alt="UniExplorer Platform Screenshot" class="screenshot-image">
-            <div class="screenshot-overlay">
-                <div class="screenshot-overlay-icon">🔍</div>
-                <div class="screenshot-overlay-text">
-                    <div>View Full Screenshot</div>
-                    <div class="screenshot-overlay-subtext">Click to expand and explore the platform</div>
+    <!-- Screenshots Section -->
+    <section class="screenshots-section">
+        <div class="container">
+            <h2 class="screenshots-title">Platform Screenshots</h2>
+            <p class="screenshots-subtitle">Explore the UniExplorer interface and discover how easy it is to find your perfect programme</p>
+            <div class="screenshots-grid">
+                <div class="screenshot-item" onclick="openModal('screenshot-1.jpeg', 'Dashboard View', 'Main dashboard showing personalized programme recommendations')">
+                    <img src="screenshot-1.jpeg" alt="Dashboard View" class="screenshot-thumbnail">
+                    <div class="screenshot-overlay">
+                        <div class="screenshot-overlay-icon">🔍</div>
+                        <div class="screenshot-overlay-text">Click to expand</div>
+                    </div>
+                    <div class="screenshot-caption">
+                        <h3>Home page</h3>
+                        <p>The first page you see welcoming you</p>
+                    </div>
+                </div>
+
+                <div class="screenshot-item" onclick="openModal('screenshot-2.jpeg', 'Programme Search', 'Advanced search and filtering options')">
+                    <img src="screenshot-2.jpeg" alt="Programme Search" class="screenshot-thumbnail">
+                    <div class="screenshot-overlay">
+                        <div class="screenshot-overlay-icon">🔍</div>
+                        <div class="screenshot-overlay-text">Click to expand</div>
+                    </div>
+                    <div class="screenshot-caption">
+                        <h3>Programme Search</h3>
+                        <p>Advanced search and filtering</p>
+                    </div>
+                </div>
+
+                <div class="screenshot-item" onclick="openModal('screenshot-3.jpeg', 'University Profiles', 'Detailed university information and programmes')">
+                    <img src="screenshot-3.jpeg" alt="University Profiles" class="screenshot-thumbnail">
+                    <div class="screenshot-overlay">
+                        <div class="screenshot-overlay-icon">🔍</div>
+                        <div class="screenshot-overlay-text">Click to expand</div>
+                    </div>
+                    <div class="screenshot-caption">
+                        <h3>Eligibility Checker</h3>
+                        <p>Instant eligibility verification</p>
+                    </div>
+                </div>
+
+                <div class="screenshot-item" onclick="openModal('screenshot-4.jpeg', 'Eligibility Checker', 'Instant eligibility verification tool')">
+                    <img src="screenshot-4.jpeg" alt="Eligibility Checker" class="screenshot-thumbnail">
+                    <div class="screenshot-overlay">
+                        <div class="screenshot-overlay-icon">🔍</div>
+                        <div class="screenshot-overlay-text">Click to expand</div>
+                    </div>
+                    <div class="screenshot-caption">
+                        <h3>Home page (Dark)</h3>
+                        <p>The first page you see welcoming you</p>
+                    </div>
+                </div>
+
+                <div class="screenshot-item" onclick="openModal('screenshot-5.jpeg', 'Saved Programmes', 'Manage your favourite programme selections')">
+                    <img src="screenshot-5.jpeg" alt="Saved Programmes" class="screenshot-thumbnail">
+                    <div class="screenshot-overlay">
+                        <div class="screenshot-overlay-icon">🔍</div>
+                        <div class="screenshot-overlay-text">Click to expand</div>
+                    </div>
+                    <div class="screenshot-caption">
+                        <h3>Programme Search (Dark)</h3>
+                        <p>Advanced search and filtering</p>
+                    </div>
+                </div>
+
+                <div class="screenshot-item" onclick="openModal('screenshot-6.jpeg', 'Application Tracker', 'Track your application progress and deadlines')">
+                    <img src="screenshot-6.jpeg" alt="Application Tracker" class="screenshot-thumbnail">
+                    <div class="screenshot-overlay">
+                        <div class="screenshot-overlay-icon">🔍</div>
+                        <div class="screenshot-overlay-text">Click to expand</div>
+                    </div>
+                    <div class="screenshot-caption">
+                        <h3>Eligibility Checker (Dark)</h3>
+                        <p>Instant eligibility verification</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -725,7 +860,8 @@
     <div id="screenshotModal" class="modal" onclick="closeModal()">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
-            <img src="uniexplorer-screenshot.jpeg" alt="UniExplorer Platform Screenshot" class="modal-image">
+            <img id="modalImage" src="/placeholder.svg" alt="" class="modal-image" onclick="toggleZoom(event)">
+            <div id="modalCaption" class="modal-caption"></div>
         </div>
     </div>
 
@@ -927,19 +1063,37 @@
     </footer>
 
     <script>
-        function openModal() {
-            document.getElementById('screenshotModal').style.display = 'block';
+        function openModal(imageSrc, title, description) {
+            const modal = document.getElementById('screenshotModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalCaption = document.getElementById('modalCaption');
+            
+            modalImage.src = imageSrc;
+            modalImage.alt = title;
+            modalImage.classList.remove('zoomed');
+            modalCaption.innerHTML = `<strong>${title}</strong><br>${description}`;
+            
+            modal.style.display = 'block';
         }
 
         function closeModal() {
-            document.getElementById('screenshotModal').style.display = 'none';
+            const modal = document.getElementById('screenshotModal');
+            const modalImage = document.getElementById('modalImage');
+            modalImage.classList.remove('zoomed');
+            modal.style.display = 'none';
+        }
+
+        function toggleZoom(event) {
+            event.stopPropagation();
+            const modalImage = document.getElementById('modalImage');
+            modalImage.classList.toggle('zoomed');
         }
 
         // Close modal when clicking outside of it
         window.onclick = function(event) {
             const modal = document.getElementById('screenshotModal');
             if (event.target === modal) {
-                modal.style.display = 'none';
+                closeModal();
             }
         }
 
